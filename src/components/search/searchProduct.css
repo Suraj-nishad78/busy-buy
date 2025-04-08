@@ -1,0 +1,14 @@
+/* Search box styles */
+ #search-input{
+    text-align: center;  
+  }
+ #search-input input{
+    font-size: 1.4em;
+    padding: 16px;
+    width: 15em;
+    outline: none;
+    border-color: blue;
+    border-radius: 10px;
+    color: rgb(9, 139, 190);
+    background-color: rgba(128, 128, 128, 0.15);
+  }
