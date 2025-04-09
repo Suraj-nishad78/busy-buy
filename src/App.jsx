@@ -6,7 +6,7 @@ import { Routes, Route } from "react-router-dom";
 
 //Components imported here
 import Navbar from "./components/navbar/Navbar";
-import Home from "./pages/Home";
+import { Home, Signin, Signup, Cart } from "./pages/pages";
 
 function App() {
   return (
@@ -15,6 +15,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/Cart" element={<Cart />} />
         </Routes>
       </BrowserRouter>
       {/* Toaster Component */}

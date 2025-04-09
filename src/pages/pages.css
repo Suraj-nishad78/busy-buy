@@ -1,16 +1,15 @@
-
 /* Home container styles */
-.home-container {
+.home-container, .cart-container {
   display: flex;
 }
 /* Content container styles here */
-.content-container {
+.content-container, .cart-container-box {
   margin: 30px auto;
   width: 70vw;
 }
 
 /* Card container styles */
-.card-container{
+.card-container, .cart-items {
   margin-top: 50px;
   text-align: center;
   display: flex;
@@ -18,6 +17,74 @@
   flex-wrap: wrap;
   gap: 2em;
   border-radius: 10px;
+}
+
+/* Signin styles */
+.signin-container,
+.signup-container {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  flex-direction: column;
+  height: 70vh;
+  width: max-content;
+  margin: 0 auto;
+}
+.signin-container h1,
+.signup-container h1 {
+  font-size: 3em;
+  margin-bottom: 0.9em;
+  color: #284c54;
+  font-weight: bold;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.signin-container p {
+  font-size: 1.1em;
+  color: #284c54;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.signin-container p:hover {
+  cursor: pointer;
+  color: #328699;
+  font-size: 1.11em;
+}
+
+/*--------- Cart Styles ----------*/
+#cart-total-price {
+  min-width: 15vw;
+  max-width: 16vw;
+  height: 22vh;
+  background-color: rgba(128, 128, 128, 0.3);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 5px;
+  /* text-align: center; */
+  margin-top: 7em;
+  position: sticky;
+  top: 30.7%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#cart-total-price p{
+  font-size: 1.3em;
+  font-weight: 600;
+  color: #284c54;
+}
+#cart-total-price button{
+  font-size: 1.3em;
+  margin-top: 15px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background-color: #7864e4;
+  color: white;
+  border: none;
+}
+#cart-total-price button:hover{
+  cursor: pointer;
+  background-color: #5244a3;
 }
 
 

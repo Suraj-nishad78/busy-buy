@@ -4,8 +4,11 @@ import "./pages.css";
 import Sidebar from "../components/sidebar/Sidebar";
 import SearchProducts from "../components/search/SearchProducts";
 import Card from "../components/card/Card";
+import { useState } from "react";
 
 const Home = () => {
+
+  const [products, setProducts] = useState([])
 
   return (
     <>
@@ -14,7 +17,7 @@ const Home = () => {
         <div className="content-container">
           <SearchProducts />
           <div className="card-container">
-            <Card />
+            <Card products={products}/>
           </div>
         </div>
       </div>

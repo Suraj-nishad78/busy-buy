@@ -19,7 +19,7 @@
     margin-bottom: 10px;
     font-size: 1.7em;
     font-weight: bold;
-    color: rgb(17, 108, 145);
+    color: #284c54;
   }
   .sidebar-container #filter p {
     margin-bottom: 10px;
@@ -37,7 +37,7 @@
   .sidebar-container #filter-checkbox h2 {
     font-size: 1.7em;
     font-weight: bold;
-    color: rgb(17, 108, 145);
+    color: #284c54;
     margin-bottom: 10px;
   }
   .sidebar-container #filter-checkbox label {
