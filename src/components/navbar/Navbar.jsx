@@ -23,7 +23,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link className="nav-link" to="/orders">
+              <Link className="nav-link" to="/myOrders">
                 <img
                   src="https://media.lordicon.com/icons/wired/flat/139-basket.svg"
                   alt="order-image"

@@ -29,9 +29,11 @@
     font-size: 1.4em;
     padding: 10px 0px;
     width: 10em;
-    border: none;
+    /* border-color: rgb(9, 139, 190); */
+    border-color: #7864e4;
     border-radius: 5px;
-    background-color:  rgb(9, 139, 190);
+    /* background-color:  rgb(9, 139, 190); */
+    background-color:  #7864e4;
     color: white;
   }
   .card-content #remove-cart{
@@ -39,13 +41,21 @@
     font-size: 1.4em;
     padding: 10px 0px;
     width: 10em;
-    border: none;
+    border-color: rgb(235, 48, 48);
     border-radius: 5px;
     background-color:  rgb(235, 48, 48);
     color: white;
   }
-  .card-content button:hover{
+  .card-content #add-to-cart:hover{
     cursor: pointer;
+    background-color: white;
+    /* color: rgb(9, 139, 190); */
+    color: #7864e4;
+  }
+  .card-content #remove-cart:hover{
+    cursor: pointer;
+    background-color: white;
+    color: rgb(235, 48, 48);
   }
   #price-quantity{
     display: flex;
@@ -79,3 +89,4 @@
     cursor: pointer;
     background-color: rgb(66, 45, 45);
   }
+  

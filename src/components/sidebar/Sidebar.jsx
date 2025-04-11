@@ -1,19 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./Sidebar.css";
+import { ProductContext } from "../../context";
 
 const Sidebar = () => {
-  const [rangeValue, setRangeValue] = useState(50000);
+  const [rangeValue, setRangeValue] = useState(75000);
   const [selectedOptions, setSelectedOptions] = useState({
     Mens_Clothing: false,
     Womens_Clothing: false,
-    Jewellery: false,
-    Electronics: false,
+    jewelery: false,
+    electronics: false,
   });
+  const { products, setProductByPrice, setProductByCategory } =
+    useContext(ProductContext);
 
   const handleRange = (e) => {
     setRangeValue(Number(e.target.value));
+    const pricedProduct = products.filter(
+      (product) => Number(product.price) < rangeValue
+    );
+    setProductByPrice(pricedProduct);
   };
 
+  let categoryProduct;
   const handleSelectedBox = (e) => {
     const { name, checked } = e.target;
     setSelectedOptions((prev) => ({
@@ -21,7 +29,24 @@ const Sidebar = () => {
       [name]: checked,
     }));
   };
-  useEffect(() => {}, [selectedOptions]);
+
+  const ProductByCategory = () =>{
+    const men = selectedOptions.Mens_Clothing ? "men's clothing" : "";
+    const women = selectedOptions.Womens_Clothing ? "women's clothing" : "";
+    const jewelery = selectedOptions.jewelery ? "jewelery" : "";
+    const electronics = selectedOptions.electronics ? "electronics" : "";
+
+    const allowdCategory = [men, women, jewelery, electronics];
+
+    categoryProduct = products.filter((product) =>
+      allowdCategory.includes(product.category)
+    );
+    setProductByCategory(categoryProduct);
+  }
+
+  useEffect(() => {
+    ProductByCategory();
+  }, [selectedOptions]);
   return (
     <>
       <div className="sidebar-container">
@@ -33,7 +58,7 @@ const Sidebar = () => {
             min="1"
             max="99999"
             value={rangeValue}
-            onChange={handleRange}
+            onInput={handleRange}
           />
         </div>
         <div id="filter-checkbox">
@@ -59,8 +84,8 @@ const Sidebar = () => {
           <label>
             <input
               type="checkbox"
-              name="Jewellery"
-              checked={selectedOptions.Jewellery}
+              name="jewelery"
+              checked={selectedOptions.jewelery}
               onChange={handleSelectedBox}
             />
             Jewellery
@@ -68,8 +93,8 @@ const Sidebar = () => {
           <label>
             <input
               type="checkbox"
-              name="Electronics"
-              checked={selectedOptions.Electronics}
+              name="electronics"
+              checked={selectedOptions.electronics}
               onChange={handleSelectedBox}
             />
             Electronics

@@ -1,15 +1,24 @@
 /* Home container styles */
-.home-container, .cart-container {
+.home-container,
+.cart-container {
   display: flex;
 }
 /* Content container styles here */
-.content-container, .cart-container-box {
+.content-container,
+.cart-container-box {
   margin: 30px auto;
   width: 70vw;
 }
+#product-loader{
+  margin-top: 10em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 /* Card container styles */
-.card-container, .cart-items {
+.card-container,
+.cart-items {
   margin-top: 50px;
   text-align: center;
   display: flex;
@@ -68,12 +77,12 @@
   justify-content: center;
   align-items: center;
 }
-#cart-total-price p{
+#cart-total-price p {
   font-size: 1.3em;
   font-weight: 600;
   color: #284c54;
 }
-#cart-total-price button{
+#cart-total-price button {
   font-size: 1.3em;
   margin-top: 15px;
   padding: 4px 8px;
@@ -82,10 +91,31 @@
   color: white;
   border: none;
 }
-#cart-total-price button:hover{
+#cart-total-price button:hover {
   cursor: pointer;
   background-color: #5244a3;
 }
+/*------------My-Order Styles--------------*/
+.orders-container {
+  margin: 30px auto;
+  text-align: center;
+}
+.orders-container h1{
+  font-size: 2.2em;
+  text-decoration: underline;
+}
+.order-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+
+
+
+
 
 
 
