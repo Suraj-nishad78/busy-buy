@@ -16,7 +16,7 @@
 }
 
 .navbar-container #nav-items{
-    width: 50%;
+    /* width: 50%; */
 }
 .navbar-container #nav-items ul{
     display: flex;
@@ -29,6 +29,7 @@
     list-style: none;
     padding: 5px;
     font-weight: 550;
+    width: 6.75em;
 }
 .navbar-container #nav-items ul li img{
     width: 40px;
@@ -44,5 +45,5 @@
 }
 .nav-link:hover{
     cursor: pointer;
-    color: rgb(44, 32, 32);
+    color: #284c54;
 }

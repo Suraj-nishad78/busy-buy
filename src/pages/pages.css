@@ -1,9 +1,9 @@
-/* Home container styles */
+/*------- Home container styles -----*/
 .home-container,
 .cart-container {
   display: flex;
 }
-/* Content container styles here */
+/*-------- Content container styles here -------*/
 .content-container,
 .cart-container-box {
   margin: 30px auto;
@@ -16,7 +16,7 @@
   align-items: center;
 }
 
-/* Card container styles */
+/*------- Card container styles ----------*/
 .card-container,
 .cart-items {
   margin-top: 50px;
@@ -28,7 +28,7 @@
   border-radius: 10px;
 }
 
-/* Signin styles */
+/*--------- Signin styles ------------*/
 .signin-container,
 .signup-container {
   display: flex;

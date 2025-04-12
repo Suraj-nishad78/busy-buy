@@ -31,7 +31,6 @@ const Form = ({
             value={signText.email}
             onChange={handleSignEmail}
             required
-            auto-complete="off"
           />
         )}
         {handleSignupEmail && (
