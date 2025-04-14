@@ -16,9 +16,10 @@ import { cartRef, db } from "../../../config/firebaseinit";
 
 const Card = ({ products, removeBtn, addCartBtn, fetchCartItem }) => {
   const navigate = useNavigate();
-  const { userId } = useContext(UserContext);
-  const [showAdding, setShowAdding] = useState(false);
+  const { userId } = useContext(UserContext); //Retrieve userId from context
+  const [showAdding, setShowAdding] = useState(false);// State to handle the loading state while adding
 
+  // Function to check if a product already exists in the user's cart
   const checkProductInCart = async (id) => {
     try {
       const q = query(
@@ -37,6 +38,7 @@ const Card = ({ products, removeBtn, addCartBtn, fetchCartItem }) => {
     }
   };
 
+  // Function to handle adding product to the cart
   const handleAddTocart = async (products) => {
     try {
       if (!userId) {
@@ -69,6 +71,7 @@ const Card = ({ products, removeBtn, addCartBtn, fetchCartItem }) => {
     }
   };
 
+  // Function to remove product from the cart
   const handleRemoveProduct = async (id) => {
     try {
       const removeProduct = doc(db, "cart", id);
@@ -80,6 +83,7 @@ const Card = ({ products, removeBtn, addCartBtn, fetchCartItem }) => {
     }
   };
 
+    // Function to increase the product quantity in the cart
   const incProductQuantity = async (product) => {
     try {
       const { id, ...rest } = products;
@@ -94,6 +98,8 @@ const Card = ({ products, removeBtn, addCartBtn, fetchCartItem }) => {
       console.log("error while increasing quantiy of cart item: ", err);
     }
   };
+
+  // Function to decrease the product quantity in the cart
   const decProductQuantity = async (product) => {
     try {
       const { id, ...rest } = products;
@@ -121,6 +127,7 @@ const Card = ({ products, removeBtn, addCartBtn, fetchCartItem }) => {
         </div>
         <div className="card-content">
           <p>
+          {/* Limit product title to 34 characters */}
             {products.title.length > 34
               ? products.title.slice(0, 34) + "..."
               : products.title}
@@ -128,6 +135,7 @@ const Card = ({ products, removeBtn, addCartBtn, fetchCartItem }) => {
           <div id="price-quantity">
             <h3>₹ {products.price}</h3>
             {removeBtn && (
+              // Display quantity manager if remove button is passed
               <div id="quantity-manage">
                 <button onClick={() => decProductQuantity(products)}>
                   <i className="fa-solid fa-minus"></i>
@@ -140,11 +148,13 @@ const Card = ({ products, removeBtn, addCartBtn, fetchCartItem }) => {
             )}
           </div>
           {addCartBtn && (
+            // Display add to cart button if addCartBtn prop is passed
             <button id="add-to-cart" onClick={() => handleAddTocart(products)}>
               {showAdding ? "Adding" : "Add To Cart"}
             </button>
           )}
           {removeBtn && (
+            // Display remove button if removeBtn prop is passed
             <button
               id="remove-cart"
               onClick={() => handleRemoveProduct(products.id)}

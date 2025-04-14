@@ -9,7 +9,7 @@
   margin: 30px auto;
   width: 70vw;
 }
-#product-loader{
+.product-loader{
   margin-top: 10em;
   display: flex;
   justify-content: center;

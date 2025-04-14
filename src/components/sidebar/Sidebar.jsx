@@ -3,16 +3,23 @@ import "./Sidebar.css";
 import { ProductContext } from "../../context";
 
 const Sidebar = () => {
+
+  // State to manage price range slider
   const [rangeValue, setRangeValue] = useState(75000);
+
+  // State to track selected category checkboxes
   const [selectedOptions, setSelectedOptions] = useState({
     Mens_Clothing: false,
     Womens_Clothing: false,
     jewelery: false,
     electronics: false,
   });
+
+  // Access global product data and filter setters from context
   const { products, setProductByPrice, setProductByCategory } =
     useContext(ProductContext);
 
+    // Handle price slider change
   const handleRange = (e) => {
     setRangeValue(Number(e.target.value));
     const pricedProduct = products.filter(
@@ -21,6 +28,7 @@ const Sidebar = () => {
     setProductByPrice(pricedProduct);
   };
 
+  // Handle category checkbox change
   let categoryProduct;
   const handleSelectedBox = (e) => {
     const { name, checked } = e.target;
@@ -30,6 +38,7 @@ const Sidebar = () => {
     }));
   };
 
+  // Filters products by selected categories
   const ProductByCategory = () =>{
     const men = selectedOptions.Mens_Clothing ? "men's clothing" : "";
     const women = selectedOptions.Womens_Clothing ? "women's clothing" : "";
@@ -44,6 +53,7 @@ const Sidebar = () => {
     setProductByCategory(categoryProduct);
   }
 
+  // Re-run category filtering whenever selection changes
   useEffect(() => {
     ProductByCategory();
   }, [selectedOptions]);
@@ -53,6 +63,7 @@ const Sidebar = () => {
         <div id="filter">
           <h2>Filter</h2>
           <p>Price: {rangeValue}</p>
+          {/* Price Range Slider */}
           <input
             type="range"
             min="1"
@@ -61,6 +72,7 @@ const Sidebar = () => {
             onInput={handleRange}
           />
         </div>
+        {/* Category Checkboxes */}
         <div id="filter-checkbox">
           <h2>Category</h2>
           <label>

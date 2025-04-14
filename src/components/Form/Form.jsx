@@ -1,19 +1,23 @@
 import "./Form.css";
 
 const Form = ({
-  signText,
-  handleSignEmail,
-  handleSignPassword,
-  handleSignin,
-  signupText,
-  handleSignupName,
-  handleSignupEmail,
-  handleSignupPassword,
-  handleSignup,
+  // 🟢 Signin Props
+  signText,               // Holds signin email & password values
+  handleSignEmail,        // Handles change in signin email
+  handleSignPassword,     // Handles change in signin password
+  handleSignin,           // Handles signin form submission
+
+  // 🔵 Signup Props
+  signupText,             // Holds signup name, email & password values
+  handleSignupName,       // Handles change in signup name
+  handleSignupEmail,      // Handles change in signup email
+  handleSignupPassword,   // Handles change in signup password
+  handleSignup,           // Handles signup form submission
 }) => {
   return (
     <>
       <form className="form-sign">
+      {/* Name input (for Signup only) */}
         {handleSignupName && (
           <input
             type="text"
@@ -24,6 +28,7 @@ const Form = ({
             auto-complete="off"
           />
         )}
+        {/* Email input for Signin */}
         {handleSignEmail && (
           <input
             type="email"
@@ -33,6 +38,7 @@ const Form = ({
             required
           />
         )}
+        {/* Email input for Signup */}
         {handleSignupEmail && (
           <input
             type="email"
@@ -43,6 +49,7 @@ const Form = ({
             auto-complete="off"
           />
         )}
+        {/* Password input for Signin */}
         {handleSignPassword && (
           <input
             type="password"
@@ -52,6 +59,7 @@ const Form = ({
             required
           />
         )}
+        {/* Password input for Signup */}
         {handleSignupPassword && (
           <input
             type="password"
@@ -61,6 +69,7 @@ const Form = ({
             required
           />
         )}
+        {/* Submit Button: Either Sign In or Sign Up */}
         {handleSignin && <button onClick={handleSignin}>Sign In</button>}
         {handleSignup && <button onClick={handleSignup}>Sign Up</button>}
       </form>

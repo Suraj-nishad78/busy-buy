@@ -1,10 +1,16 @@
-import "./OrderTable.css"
+import "./OrderTable.css";
 
-const OrderTable = () => {
+const OrderTable = ({ order }) => {
+
+  // Calculate total price of all items in the order
+  const totalPrice = order.purchaseItem.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }, 0);
   return (
     <>
       <div className="order-box">
-        <h2>Ordered On:- 2025-04-07</h2>
+        {/* Order date display */}
+        <h2>Ordered On:- {order.date}</h2>
         <div className="order-table">
           <table>
             <thead>
@@ -16,15 +22,21 @@ const OrderTable = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Fjallraven - Foldsack No....</td>
-                <td>₹ 1099</td>
-                <td>1</td>
-                <td>₹ 1099</td>
-              </tr>
+              {order.purchaseItem.map((purchaseItem) => (
+                <tr key={purchaseItem.productId}>
+                  <td>
+                    {purchaseItem.title.length > 30
+                      ? purchaseItem.title.slice(0, 30) + "...."
+                      : purchaseItem.title}
+                  </td>
+                  <td>₹ {purchaseItem.price}</td>
+                  <td>{purchaseItem.quantity}</td>
+                  <td>₹ {purchaseItem.price * purchaseItem.quantity}</td>
+                </tr>
+              ))}
               <tr>
                 <td colSpan="3"></td>
-                <td>₹ 1798</td>
+                <td>₹ {totalPrice}</td>
               </tr>
             </tbody>
           </table>

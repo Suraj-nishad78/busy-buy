@@ -10,9 +10,13 @@ import { Home, Signin, Signup, Cart, MyOrders } from "./pages/pages";
 import { UserContext } from "./context";
 
 function App() {
+  // State to hold userId
   const [userId, setUserId] = useState("");
+
+  // Shared context value
   const sharedDataUser = { userId, setUserId };
 
+  // ProtectedRoute: Prevent access to private routes if not logged in
   const ProtectedRoute = ({ children }) => {
     if (!userId) {
       return <Navigate to="/" replace />;
@@ -20,11 +24,24 @@ function App() {
     return children;
   };
 
+  //On mount: Get userId from localStorage
+  useEffect(() => {
+    const uId = localStorage.getItem("userId");
+    setUserId(uId);
+  }, []);
+
+  // Update userId if it changes in localStorage (not usually needed like this)
+  useEffect(() => {
+    const uId = localStorage.getItem("userId");
+    setUserId(uId);
+  }, [userId]);
+
   return (
     <>
       <BrowserRouter>
         <UserContext.Provider value={sharedDataUser}>
           <Navbar />
+          {/* Routes for Diffrent page */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route
@@ -51,7 +68,7 @@ function App() {
       {/* Toaster Component */}
       <ToastContainer
         // position="top-right"
-        position="top-left"
+        position="top-right"
         autoClose={3000} // Auto closes after 3 seconds
         hideProgressBar={false}
         newestOnTop={true}

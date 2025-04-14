@@ -3,25 +3,34 @@ import "./navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context";
 import { toast } from "react-toastify";
+import { signOut } from "firebase/auth";
+import { auth } from "../../../config/firebaseinit";
 
 const Navbar = () => {
+
+  // Access userId and method to update it from context
   const {userId, setUserId} = useContext(UserContext)
   const navigate = useNavigate()
 
-  const logoutUser = () =>{
-    setUserId('')
-    navigate('/')
-    toast.success('You have successfully Logout!')
-  }
+  // Logout handler
+  const logoutUser = async () => {
+    await signOut(auth);              // Sign out from Firebase Auth
+    localStorage.clear();             // Clear local storage
+    setUserId('');                    // Clear context userId
+    navigate('/');                    // Redirect to home page
+    toast.success('You have successfully Logout!'); // Show toast
+  };
   
   return (
     <>
       <div className="navbar-container">
+        {/* App Title */}
         <div id="nav-title">
           <Link className="nav-link" to="/">
             <p>Busy Buy</p>
           </Link>
         </div>
+        {/* Navigation Items */}
         <div id="nav-items">
           <ul>
             <li>
@@ -33,6 +42,7 @@ const Navbar = () => {
                 Home
               </Link>
             </li>
+            {/* My Orders (Visible only if logged in) */}
             {userId && (<li>
               <Link className="nav-link" to="/myOrders">
                 <img
@@ -42,6 +52,7 @@ const Navbar = () => {
                 My Orders
               </Link>
             </li>)}
+            {/* Cart (Visible only if logged in) */}
             {userId && (<li>
               <Link className="nav-link" to="/cart">
                 <img
@@ -52,6 +63,7 @@ const Navbar = () => {
               </Link>
             </li>)}
             <li>
+            {/* Logout if logged in, otherwise Signin */}
               {userId?
               (<Link className="nav-link" to="" onClick={logoutUser}>
               <img
