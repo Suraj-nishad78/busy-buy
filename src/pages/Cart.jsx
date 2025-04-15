@@ -1,6 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import Card from "../components/card/Card";
-import { addDoc, deleteDoc, doc, getDocs } from "firebase/firestore";
+import {
+  onSnapshot,
+  query,
+  where,
+  addDoc,
+  deleteDoc,
+  doc,
+  getDocs,
+} from "firebase/firestore";
 import { GridLoader } from "react-spinners";
 import { toast } from "react-toastify";
 
@@ -8,34 +16,20 @@ import { cartRef, db, orderRef } from "../../config/firebaseinit";
 import { UserContext } from "../context";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]); // State to store cart items
-  // State to control visibility of the 'Remove' button
-  const [removeBtn, setRemoveBtn] = useState(true); 
-  // State to store the total price of the cart items
-  const [totalPrice, setTotalPrice] = useState(0); 
-  // State to manage loading state while fetching data
-  const [loader, setLoader] = useState(false); 
-  // Extracting userId from UserContext
-  const { userId } = useContext(UserContext); 
+  // State to store cart items
+  const [cartItems, setCartItems] = useState([]);
 
-  // Function to fetch cart items for the logged-in user from Firestore
-  const fetchCartItem = async () => {
-    try {
-      setLoader(true);
-      const carts = await getDocs(cartRef);
-      const cartProducts = carts.docs.map((cart) => ({
-        id: cart.id,
-        ...cart.data(),
-      })); //Mapping Firestore docs to an array of cart products
-      const userCartItem = cartProducts.filter(
-        (cart) => cart.userId === userId
-      );
-      setCartItems(userCartItem);
-      setLoader(false);
-    } catch (error) {
-      console.log("Error while fetching cart product: ", error);
-    }
-  };
+  // State to control visibility of the 'Remove' button
+  const [removeBtn, setRemoveBtn] = useState(true);
+
+  // State to store the total price of the cart items
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  // State to manage loading state while fetching data
+  const [loader, setLoader] = useState(false);
+
+  // Extracting userId from UserContext
+  const { userId } = useContext(UserContext);
 
   // Function to calculate the total price of the cart items
   const userCartTotalPrice = () => {
@@ -50,7 +44,7 @@ const Cart = () => {
     try {
       const removeItem = doc(db, "cart", id);
       await deleteDoc(removeItem);
-      fetchCartItem();
+      // fetchCartItem();
     } catch (err) {
       console.log("Error while removing item from cart: ", err);
     }
@@ -87,10 +81,23 @@ const Cart = () => {
     }
   };
 
-  // Fetch cart items when the component mounts
+// useEffect to fetch cart items for the logged-in user from Firestore
   useEffect(() => {
-    fetchCartItem();
-  }, []);
+    if (!userId) return;
+  
+    const q = query(cartRef, where("userId", "==", userId));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const updatedCart = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setCartItems(updatedCart);
+      setLoader(false); // turn off loader here
+    });
+  
+    // Cleanup the listener when component unmounts or userId changes
+    return () => unsubscribe();
+  }, [userId]);
 
   // Update the total price whenever the cart items change
   useEffect(() => {
@@ -112,7 +119,6 @@ const Cart = () => {
                   key={product.id}
                   products={product}
                   removeBtn={removeBtn}
-                  fetchCartItem={fetchCartItem}
                 />
               ))}
             </div>

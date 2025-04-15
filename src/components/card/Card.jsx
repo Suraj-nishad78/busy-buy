@@ -14,10 +14,10 @@ import {
 } from "firebase/firestore";
 import { cartRef, db } from "../../../config/firebaseinit";
 
-const Card = ({ products, removeBtn, addCartBtn, fetchCartItem }) => {
+const Card = ({ products, removeBtn, addCartBtn }) => {
   const navigate = useNavigate();
   const { userId } = useContext(UserContext); //Retrieve userId from context
-  const [showAdding, setShowAdding] = useState(false);// State to handle the loading state while adding
+  const [showAdding, setShowAdding] = useState(false); // State to handle the loading state while adding
 
   // Function to check if a product already exists in the user's cart
   const checkProductInCart = async (id) => {
@@ -76,14 +76,13 @@ const Card = ({ products, removeBtn, addCartBtn, fetchCartItem }) => {
     try {
       const removeProduct = doc(db, "cart", id);
       await deleteDoc(removeProduct);
-      fetchCartItem();
       toast.success("Item Removed Successfully!");
     } catch (err) {
       console.log("Error while remove item from cart: ", err);
     }
   };
 
-    // Function to increase the product quantity in the cart
+  // Function to increase the product quantity in the cart
   const incProductQuantity = async (product) => {
     try {
       const { id, ...rest } = products;
@@ -93,7 +92,6 @@ const Card = ({ products, removeBtn, addCartBtn, fetchCartItem }) => {
       };
       const updatedProduct = doc(db, "cart", product.id);
       await updateDoc(updatedProduct, updatedProductDetails);
-      fetchCartItem();
     } catch (err) {
       console.log("error while increasing quantiy of cart item: ", err);
     }
@@ -113,7 +111,6 @@ const Card = ({ products, removeBtn, addCartBtn, fetchCartItem }) => {
       }
       const updatedProduct = doc(db, "cart", product.id);
       await updateDoc(updatedProduct, updatedProductDetails);
-      fetchCartItem();
     } catch (err) {
       console.log("error while increasing quantiy of cart item: ", err);
     }
@@ -127,7 +124,7 @@ const Card = ({ products, removeBtn, addCartBtn, fetchCartItem }) => {
         </div>
         <div className="card-content">
           <p>
-          {/* Limit product title to 34 characters */}
+            {/* Limit product title to 34 characters */}
             {products.title.length > 34
               ? products.title.slice(0, 34) + "..."
               : products.title}
