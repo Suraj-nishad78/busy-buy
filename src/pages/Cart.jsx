@@ -81,10 +81,11 @@ const Cart = () => {
     }
   };
 
-// useEffect to fetch cart items for the logged-in user from Firestore
-  useEffect(() => {
+  // useEffect to fetch cart items for the logged-in user from Firestore
+  const fetchCartItem = () => {
     if (!userId) return;
-  
+
+    setLoader(true); // turn on loader here
     const q = query(cartRef, where("userId", "==", userId));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const updatedCart = snapshot.docs.map((doc) => ({
@@ -94,9 +95,12 @@ const Cart = () => {
       setCartItems(updatedCart);
       setLoader(false); // turn off loader here
     });
-  
+
     // Cleanup the listener when component unmounts or userId changes
     return () => unsubscribe();
+  };
+  useEffect(() => {
+    fetchCartItem();
   }, [userId]);
 
   // Update the total price whenever the cart items change
