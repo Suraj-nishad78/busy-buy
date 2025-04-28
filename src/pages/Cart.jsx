@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 
 import { cartRef, db, orderRef } from "../../config/firebaseinit";
 import { UserContext } from "../context";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   // State to store cart items
@@ -30,6 +31,8 @@ const Cart = () => {
 
   // Extracting userId from UserContext
   const { userId } = useContext(UserContext);
+
+  const navigate = useNavigate()
 
   // Function to calculate the total price of the cart items
   const userCartTotalPrice = () => {
@@ -76,6 +79,7 @@ const Cart = () => {
       await addDoc(orderRef, purchaseDetails);
       toast.success("Item Purcase Successfully!");
       cartIds.forEach((cart) => removeCartItem(cart.id));
+      navigate('/myOrders')
     } catch (err) {
       console.log("Error while purchasing: ", err);
     }

@@ -6,7 +6,14 @@ import { Routes, Route } from "react-router-dom";
 
 //Components imported here
 import Navbar from "./components/navbar/Navbar";
-import { Home, Signin, Signup, Cart, MyOrders } from "./pages/pages";
+import {
+  Home,
+  Signin,
+  Signup,
+  Cart,
+  MyOrders,
+  PageNotFound,
+} from "./pages/pages";
 import { UserContext } from "./context";
 
 function App() {
@@ -62,6 +69,7 @@ function App() {
             />
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </UserContext.Provider>
       </BrowserRouter>
