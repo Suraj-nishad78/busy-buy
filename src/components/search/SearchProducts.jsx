@@ -1,36 +1,32 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import "./searchProduct.css";
-import { ProductContext } from "../../context";
-import { getDocs } from "firebase/firestore";
-import { productRef } from "../../../config/firebaseinit";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchProduct } from "../../store/reducers/home.reducer";
 
 const SearchProducts = () => {
-
   // State to store the current search input
   const [searchText, setSearchText] = useState("");
+  const dispatch = useDispatch();
+  const products = useSelector((store) => store.home.products);
 
-  // Get global product data and function to update searched results
-  const { products, setSearchProduct } =
-    useContext(ProductContext);
-
-   //  Handle search input and filter products based on title match 
+  //  Handle search input and filter products based on title match
   const handleSearchText = (e) => {
     setSearchText(e.target.value);
     const searchProduct = products.filter((product) =>
       product.title.toLowerCase().includes(searchText.toLowerCase())
     );
-    setSearchProduct(searchProduct);
+    dispatch(setSearchProduct(searchProduct));
   };
-  
+
   // Clear search input and reset search results
   const handleCross = () => {
     setSearchText("");
-    setSearchProduct([]);
+    dispatch(setSearchProduct([]));
   };
   return (
     <>
       <div id="search-input">
-      {/* Search Input */}
+        {/* Search Input */}
         <input
           type="text"
           placeholder="Search By Name"

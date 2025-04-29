@@ -7,7 +7,6 @@ import {
   addDoc,
   deleteDoc,
   doc,
-  getDocs,
 } from "firebase/firestore";
 import { GridLoader } from "react-spinners";
 import { toast } from "react-toastify";
@@ -15,31 +14,40 @@ import { toast } from "react-toastify";
 import { cartRef, db, orderRef } from "../../config/firebaseinit";
 import { UserContext } from "../context";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  setLoader,
+  setCartItems,
+  setTotalPrice,
+} from "../store/reducers/cart.reducer";
 
 const Cart = () => {
-  // State to store cart items
-  const [cartItems, setCartItems] = useState([]);
-
   // State to control visibility of the 'Remove' button
   const [removeBtn, setRemoveBtn] = useState(true);
 
-  // State to store the total price of the cart items
-  const [totalPrice, setTotalPrice] = useState(0);
-
-  // State to manage loading state while fetching data
-  const [loader, setLoader] = useState(false);
-
   // Extracting userId from UserContext
   const { userId } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
+  // State to store cart items
+  // const [cartItems, setCartItems] = useState([]);
+
+  // // State to store the total price of the cart items
+  // const [totalPrice, setTotalPrice] = useState(0);
+
+  // // State to manage loading state while fetching data
+  // const [loader, setLoader] = useState(false);
+
+  const { cartItems, totalPrice, loader } = useSelector((store) => store.cart);
+  const dispatch = useDispatch()
 
   // Function to calculate the total price of the cart items
   const userCartTotalPrice = () => {
     const userTotalPrice = cartItems.reduce((acc, cart) => {
       return acc + cart.price * cart.quantity;
     }, 0);
-    setTotalPrice(userTotalPrice);
+    dispatch(setTotalPrice(userTotalPrice));
   };
 
   // Function to remove a cart item from the Firestore collection
@@ -79,7 +87,7 @@ const Cart = () => {
       await addDoc(orderRef, purchaseDetails);
       toast.success("Item Purcase Successfully!");
       cartIds.forEach((cart) => removeCartItem(cart.id));
-      navigate('/myOrders')
+      navigate("/myOrders");
     } catch (err) {
       console.log("Error while purchasing: ", err);
     }
@@ -89,15 +97,15 @@ const Cart = () => {
   const fetchCartItem = () => {
     if (!userId) return;
 
-    setLoader(true); // turn on loader here
+    dispatch(setLoader()); // turn on loader here
     const q = query(cartRef, where("userId", "==", userId));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const updatedCart = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setCartItems(updatedCart);
-      setLoader(false); // turn off loader here
+      // setLoader(false); // turn off loader here
+      dispatch(setCartItems(updatedCart));
     });
 
     // Cleanup the listener when component unmounts or userId changes

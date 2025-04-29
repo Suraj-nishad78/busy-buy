@@ -1,74 +1,61 @@
 import "./pages.css";
 import { useEffect, useState } from "react";
-import { addDoc, getDocs } from "firebase/firestore";
 import { GridLoader } from "react-spinners";
+import { useDispatch, useSelector } from "react-redux";
 
 import Sidebar from "../components/sidebar/Sidebar";
 import SearchProducts from "../components/search/SearchProducts";
 import Card from "../components/card/Card";
-import { productRef } from "../../config/firebaseinit";
 import { ProductContext } from "../context";
+import {
+  setSearchProduct,
+  setProductByPrice,
+  setProductByCategory,
+  getProducts,
+} from "../store/reducers/home.reducer";
 
 const Home = () => {
-  const [products, setProducts] = useState([]); // State to store all products fetched from Firestore
-  const [addCartBtn, setAddCartBtn] = useState(true); // State to manage the visibility of the 'Add to Cart' button
-  const [searchProduct, setSearchProduct] = useState([]); // State to store products filtered by search
-  const [productByPrice, setProductByPrice] = useState([]); // State to store products filtered by price
-  const [productByCategory, setProductByCategory] = useState([]); // State to store products filtered by category
-  const [loader, setLoader] = useState(false); // State to manage loading state
 
-  // Function to fetch products from Firestore
-  const getProducts = async () => {
-    try {
-      setLoader(true);
-      const fetchProduct = await getDocs(productRef);
-      const product = fetchProduct.docs.map((product) => ({
-        id: product.id,
-        ...product.data(),
-      }));
-      setLoader(false);
-      setProducts(product);
-    } catch (err) {
-      console.log("Error while fetching product: ", err);
-    }
-  };
+  // State to manage the visibility of the 'Add to Cart' button
+  const [addCartBtn, setAddCartBtn] = useState(true); 
+  const dispatch = useDispatch()
 
-  // Determine which product list to display based on the active filters (search, price, category)
-  const getFilteredProducts = () => {
-    let filtered = [...products];
-  
-    if (searchProduct.length) {
-      const searchIds = searchProduct.map((item) => item.id);
-      filtered = filtered.filter((item) => searchIds.includes(item.id));
-    }
-  
-    if (productByPrice.length) {
-      const priceIds = productByPrice.map((item) => item.id);
-      filtered = filtered.filter((item) => priceIds.includes(item.id));
-    }
-  
-    if (productByCategory.length) {
-      const categoryIds = productByCategory.map((item) => item.id);
-      filtered = filtered.filter((item) => categoryIds.includes(item.id));
-    }
-  
-    return filtered;
-  };
-  
-  const mainProduct = getFilteredProducts();
-  
-
-  // Effect to fetch products when the component mounts
-  useEffect(() => {
-    getProducts();
-  }, []);
-
-  useEffect(() => {}, [
+  const {
+    loader,
     products,
     searchProduct,
     productByPrice,
     productByCategory,
-  ]);
+  } = useSelector((store)=>store.home)
+
+  // Determine which product list to display based on the active filters (search, price, category)
+  const getFilteredProducts = () => {
+    let filtered = [...products];
+
+    if (searchProduct.length) {
+      const searchIds = searchProduct.map((item) => item.id);
+      filtered = filtered.filter((item) => searchIds.includes(item.id));
+    }
+
+    if (productByPrice.length) {
+      const priceIds = productByPrice.map((item) => item.id);
+      filtered = filtered.filter((item) => priceIds.includes(item.id));
+    }
+
+    if (productByCategory.length) {
+      const categoryIds = productByCategory.map((item) => item.id);
+      filtered = filtered.filter((item) => categoryIds.includes(item.id));
+    }
+
+    return filtered;
+  };
+
+  const mainProduct = getFilteredProducts();
+
+  // Effect to fetch products when the component mounts
+  useEffect(() => {
+    dispatch(getProducts());
+  }, []);
 
   // Shared context data to be passed down to child components
   const sharedData = {

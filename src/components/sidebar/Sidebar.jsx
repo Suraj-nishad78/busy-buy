@@ -1,11 +1,16 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import "./Sidebar.css";
-import { ProductContext } from "../../context";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setProductByCategory,
+  setProductByPrice,
+} from "../../store/reducers/home.reducer";
 
 const Sidebar = () => {
-
   // State to manage price range slider
   const [rangeValue, setRangeValue] = useState(75000);
+  const dispatch = useDispatch();
+  const products = useSelector((store) => store.home.products);
 
   // State to track selected category checkboxes
   const [selectedOptions, setSelectedOptions] = useState({
@@ -15,17 +20,13 @@ const Sidebar = () => {
     electronics: false,
   });
 
-  // Access global product data and filter setters from context
-  const { products, setProductByPrice, setProductByCategory } =
-    useContext(ProductContext);
-
-    // Handle price slider change
+  // Handle price slider change
   const handleRange = (e) => {
     setRangeValue(Number(e.target.value));
     const pricedProduct = products.filter(
       (product) => Number(product.price) < rangeValue
     );
-    setProductByPrice(pricedProduct);
+    dispatch(setProductByPrice(pricedProduct));
   };
 
   // Handle category checkbox change
@@ -39,7 +40,7 @@ const Sidebar = () => {
   };
 
   // Filters products by selected categories
-  const ProductByCategory = () =>{
+  const ProductByCategory = () => {
     const men = selectedOptions.Mens_Clothing ? "men's clothing" : "";
     const women = selectedOptions.Womens_Clothing ? "women's clothing" : "";
     const jewelery = selectedOptions.jewelery ? "jewelery" : "";
@@ -50,8 +51,8 @@ const Sidebar = () => {
     categoryProduct = products.filter((product) =>
       allowdCategory.includes(product.category)
     );
-    setProductByCategory(categoryProduct);
-  }
+    dispatch(setProductByCategory(categoryProduct));
+  };
 
   // Re-run category filtering whenever selection changes
   useEffect(() => {
