@@ -28,16 +28,8 @@ const Cart = () => {
 
   // Extracting userId from UserContext
   const { userId } = useContext(UserContext);
+  
   const navigate = useNavigate();
-
-  // State to store cart items
-  // const [cartItems, setCartItems] = useState([]);
-
-  // // State to store the total price of the cart items
-  // const [totalPrice, setTotalPrice] = useState(0);
-
-  // // State to manage loading state while fetching data
-  // const [loader, setLoader] = useState(false);
 
   const { cartItems, totalPrice, loader } = useSelector((store) => store.cart);
   const dispatch = useDispatch()
@@ -104,7 +96,6 @@ const Cart = () => {
         id: doc.id,
         ...doc.data(),
       }));
-      // setLoader(false); // turn off loader here
       dispatch(setCartItems(updatedCart));
     });
 

@@ -6,26 +6,30 @@ import { GridLoader } from "react-spinners";
 
 import OrderTable from "../components/orderTable/OrderTable";
 import { UserContext } from "../context";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  setLoader,
+  setOrders,
+  setUserOrders,
+} from "../store/reducers/order.reducer";
 
 const MyOrders = () => {
-  const [orders, setOrders] = useState([]); // State to store all orders fetched from Firestore
-  const [userOrders, setUserOrders] = useState([]); // State to store orders belonging to the current user
-  const [loader, setLoader] = useState(true); // State to manage loading state
-
   // Access the userId from the context (global state)
   const { userId } = useContext(UserContext);
+  const { orders, userOrders, loader } = useSelector((store) => store.order);
+  const dispatch = useDispatch();
 
   // Fetch orders from Firestore and store them in the 'orders' state
   const fetchOrdersFromFireStore = async () => {
     try {
-      setLoader(true); // Set loader to true when starting the fetch process
+      dispatch(setLoader()); // Set loader to true when starting the fetch process
       const getOrders = await getDocs(orderRef); // Get all orders from Firestore
       const allOrders = getOrders.docs.map((order) => ({
         id: order.id,
         ...order.data(), // Map each order document to an object with the document data
       }));
-      setLoader(false); // Set loader to false once the data is fetched
-      setOrders(allOrders); // Update the 'orders' state with the fetched data
+      dispatch(setOrders(allOrders)); // Update the 'orders' state with the fetched data
     } catch (err) {
       console.log("Error while fetching orders: ", err); // Log any errors
     }
@@ -34,7 +38,7 @@ const MyOrders = () => {
   // Filter orders to get only the ones belonging to the current user
   const getUserOrders = () => {
     const user = orders.filter((order) => order.userId == userId);
-    setUserOrders(user);
+    dispatch(setUserOrders(user));
   };
 
   // Use effect to fetch orders when the component mounts
@@ -49,7 +53,7 @@ const MyOrders = () => {
 
   return (
     <>
-    {/* If userOrders has items, display them */}
+      {/* If userOrders has items, display them */}
       {userOrders.length ? (
         <div className="orders-container">
           <h1>Your Orders</h1>
