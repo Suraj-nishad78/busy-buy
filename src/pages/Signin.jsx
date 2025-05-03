@@ -8,6 +8,13 @@ import Form from "../components/Form/Form";
 import { auth } from "../../config/firebaseinit";
 import { toast } from "react-toastify";
 
+import {
+  setEmail,
+  setPassword,
+  setClearInputBox,
+} from "../store/reducers/user.reducer";
+import { useDispatch, useSelector } from "react-redux";
+
 const Signin = () => {
   const navigate = useNavigate(); //Initialize navigation
   const [signText, setSignText] = useState({
@@ -16,38 +23,41 @@ const Signin = () => {
   });
 
   // Accessing the context to manage the user's ID
-  const { userId, setUserId } =
-    useContext(UserContext);
+  const { userId, setUserId } = useContext(UserContext);
+  const dispatch = useDispatch()
+  const {email, password} = useSelector((store)=>store.user)
 
-    // Handle changes in the email input field
+  // Handle changes in the email input field
   const handleSignEmail = (e) => {
-    setSignText({
-      ...signText,
-      email: e.target.value,
-    });
+    // setSignText({
+    //   ...signText,
+    //   email: e.target.value,
+    // });
+    dispatch(setEmail(e.target.value));
   };
 
   // Handle changes in the password input field
   const handleSignPassword = (e) => {
-    setSignText({
-      ...signText,
-      password: e.target.value,
-    });
+    // setSignText({
+    //   ...signText,
+    //   password: e.target.value,
+    // });
+    dispatch(setPassword(e.target.value));
   };
 
   // Clear the input fields after a successful login
-  const clearInputBox = () => {
-    setSignText({
-      email: "",
-      password: "",
-    });
-  };
+  // const clearInputBox = () => {
+  //   setSignText({
+  //     email: "",
+  //     password: "",
+  //   });
+  // };
 
   // Handle the signin process with Firebase authentication
   const handleSignin = async (e) => {
     try {
       e.preventDefault(); //Prevent default form submission
-      const { email, password } = signText;
+      // const { email, password } = signText;
 
       // Check if both email and password are entered
       if (!email || !password) {
@@ -65,17 +75,18 @@ const Signin = () => {
 
       localStorage.setItem("userId", uId);
       setUserId(uId);
-      clearInputBox();
+      dispatch(setClearInputBox())
       toast.success("You have succeefully logged in!");
       navigate("/");
     } catch (error) {
       // Handle different error cases from Firebase authentication
+      console.log(error);
       switch (error.code) {
         case "auth/invalid-email":
           toast.error("Invalid email address."); // Invalid email format
           break;
-        case "auth/wrong-password":
-          toast.error("Incorrect password."); // Incorrect password entered
+        case "auth/invalid-credential":
+          toast.error("Incorrect email or password."); // Incorrect password entered
           break;
         case "auth/user-not-found":
           toast.error("No user found with this email."); // No user registered with this email

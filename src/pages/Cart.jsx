@@ -47,7 +47,6 @@ const Cart = () => {
     try {
       const removeItem = doc(db, "cart", id);
       await deleteDoc(removeItem);
-      // fetchCartItem();
     } catch (err) {
       console.log("Error while removing item from cart: ", err);
     }

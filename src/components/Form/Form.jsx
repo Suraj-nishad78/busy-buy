@@ -1,28 +1,32 @@
+import { useSelector } from "react-redux";
 import "./Form.css";
-
+import { useEffect } from "react";
 const Form = ({
   // 🟢 Signin Props
-  signText,               // Holds signin email & password values
-  handleSignEmail,        // Handles change in signin email
-  handleSignPassword,     // Handles change in signin password
-  handleSignin,           // Handles signin form submission
+  signText, // Holds signin email & password values
+  handleSignEmail, // Handles change in signin email
+  handleSignPassword, // Handles change in signin password
+  handleSignin, // Handles signin form submission
 
   // 🔵 Signup Props
-  signupText,             // Holds signup name, email & password values
-  handleSignupName,       // Handles change in signup name
-  handleSignupEmail,      // Handles change in signup email
-  handleSignupPassword,   // Handles change in signup password
-  handleSignup,           // Handles signup form submission
+  signupText, // Holds signup name, email & password values
+  handleSignupName, // Handles change in signup name
+  handleSignupEmail, // Handles change in signup email
+  handleSignupPassword, // Handles change in signup password
+  handleSignup, // Handles signup form submission
 }) => {
+
+  const {name, email, password} = useSelector((store)=>store.user)
+  
   return (
     <>
       <form className="form-sign">
-      {/* Name input (for Signup only) */}
+        {/* Name input (for Signup only) */}
         {handleSignupName && (
           <input
             type="text"
             placeholder="Enter Name"
-            value={signupText.name}
+            value={name}
             onChange={handleSignupName}
             required
             auto-complete="off"
@@ -33,7 +37,7 @@ const Form = ({
           <input
             type="email"
             placeholder="Enter Email"
-            value={signText.email}
+            value={email}
             onChange={handleSignEmail}
             required
           />
@@ -43,7 +47,7 @@ const Form = ({
           <input
             type="email"
             placeholder="Enter Email"
-            value={signupText.email}
+            value={email}
             onChange={handleSignupEmail}
             required
             auto-complete="off"
@@ -54,7 +58,7 @@ const Form = ({
           <input
             type="password"
             placeholder="Enter Password"
-            value={signText.password}
+            value={password}
             onChange={handleSignPassword}
             required
           />
@@ -64,7 +68,7 @@ const Form = ({
           <input
             type="password"
             placeholder="Enter Password"
-            value={signupText.password}
+            value={password}
             onChange={handleSignupPassword}
             required
           />

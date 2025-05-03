@@ -3,9 +3,9 @@ import "./card.css";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addDoc,
-  deleteDoc,
   doc,
   getDocs,
   query,
@@ -13,11 +13,16 @@ import {
   where,
 } from "firebase/firestore";
 import { cartRef, db } from "../../../config/firebaseinit";
+import {
+  removeItemThunk,
+  addToCartThunk,
+} from "../../store/reducers/cart.reducer";
 
 const Card = ({ products, removeBtn, addCartBtn }) => {
   const navigate = useNavigate();
   const { userId } = useContext(UserContext); //Retrieve userId from context
   const [showAdding, setShowAdding] = useState(false); // State to handle the loading state while adding
+  const dispatch = useDispatch();
 
   // Function to check if a product already exists in the user's cart
   const checkProductInCart = async (id) => {
@@ -46,6 +51,7 @@ const Card = ({ products, removeBtn, addCartBtn }) => {
         toast.error("Please Login First!");
         return;
       }
+
       const checkCart = await checkProductInCart(products.id);
       if (checkCart.length) {
         setShowAdding(true);
@@ -55,30 +61,10 @@ const Card = ({ products, removeBtn, addCartBtn }) => {
         return;
       }
       setShowAdding(true);
-      const cartProductDetails = {
-        userId,
-        productId: products.id,
-        title: products.title,
-        image: products.image,
-        price: products.price,
-        quantity: 1,
-      };
-      const productAdded = await addDoc(cartRef, cartProductDetails);
+      dispatch(addToCartThunk({ products, userId }));
       setShowAdding(false);
-      toast.success("Product Added Successfully!");
     } catch (error) {
       console.log("Error while add to cart product: ", error);
-    }
-  };
-
-  // Function to remove product from the cart
-  const handleRemoveProduct = async (id) => {
-    try {
-      const removeProduct = doc(db, "cart", id);
-      await deleteDoc(removeProduct);
-      toast.success("Item Removed Successfully!");
-    } catch (err) {
-      console.log("Error while remove item from cart: ", err);
     }
   };
 
@@ -106,7 +92,7 @@ const Card = ({ products, removeBtn, addCartBtn }) => {
         quantity: product.quantity - 1,
       };
       if (updatedProductDetails.quantity == 0) {
-        handleRemoveProduct(product.id);
+        dispatch(removeItemThunk(products.id));
         return;
       }
       const updatedProduct = doc(db, "cart", product.id);
@@ -146,7 +132,11 @@ const Card = ({ products, removeBtn, addCartBtn }) => {
           </div>
           {addCartBtn && (
             // Display add to cart button if addCartBtn prop is passed
-            <button id="add-to-cart" onClick={() => handleAddTocart(products)}>
+            <button
+              id="add-to-cart"
+              onClick={() => handleAddTocart(products)}
+              // onClick={() => dispatch(addToCartThunk({products, userId}))}
+            >
               {showAdding ? "Adding" : "Add To Cart"}
             </button>
           )}
@@ -154,7 +144,8 @@ const Card = ({ products, removeBtn, addCartBtn }) => {
             // Display remove button if removeBtn prop is passed
             <button
               id="remove-cart"
-              onClick={() => handleRemoveProduct(products.id)}
+              // onClick={() => handleRemoveProduct(products.id)}
+              onClick={() => dispatch(removeItemThunk(products.id))}
             >
               Remove From Cart
             </button>

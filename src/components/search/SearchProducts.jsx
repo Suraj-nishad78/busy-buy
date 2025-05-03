@@ -28,7 +28,7 @@ const SearchProducts = () => {
       <div id="search-input">
         {/* Search Input */}
         <input
-          type="text"
+          type="search"
           placeholder="Search By Name"
           value={searchText}
           onInput={handleSearchText}

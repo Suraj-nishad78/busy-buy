@@ -7,53 +7,59 @@ import { auth } from "../../config/firebaseinit";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
+import {
+  setName,
+  setEmail,
+  setPassword,
+  setClearInputBox,
+} from "../store/reducers/user.reducer";
+import { useDispatch, useSelector } from "react-redux";
+
 const Signup = () => {
   const [signupText, setSignUpText] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const navigate = useNavigate(); // To navigate programmatically after successful signup
+  // To navigate programmatically after successful signup
+  const navigate = useNavigate();
+  const { name, email, password } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
 
   // Handling name input change
   const handleSignupName = (e) => {
-    setSignUpText({
-      ...signupText,
-      name: e.target.value,
-    });
+    // setSignUpText({
+    //   ...signupText,
+    //   name: e.target.value,
+    // });
+    dispatch(setName(e.target.value));
   };
 
   // Handling email input change
   const handleSignupEmail = (e) => {
-    setSignUpText({
-      ...signupText,
-      email: e.target.value,
-    });
+    // setSignUpText({
+    //   ...signupText,
+    //   email: e.target.value,
+    // });
+    dispatch(setEmail(e.target.value));
   };
 
   // Handling password input change
   const handleSignupPassword = (e) => {
-    setSignUpText({
-      ...signupText,
-      password: e.target.value,
-    });
+    // setSignUpText({
+    //   ...signupText,
+    //   password: e.target.value,
+    // });
+    dispatch(setPassword(e.target.value));
   };
 
-  // Clear input fields after successful signup
-  const clearInputBox = () => {
-    setSignUpText({
-      name: "",
-      email: "",
-      password: "",
-    });
-  };
-
+  
   // Handle the signup process
   const handleSignup = async (e) => {
     try {
       e.preventDefault();
-      const { name, email, password } = signupText;
-
+      // const { name, email, password } = signupText;
+      
       // Check if all fields are filled
       if (!name || !email || !password) {
         toast.error(
@@ -68,7 +74,8 @@ const Signup = () => {
         email,
         password
       );
-      clearInputBox();
+      // Clear input fields after successful signup
+      dispatch(setClearInputBox())
       toast.success("You Have Successfully SignUp!.");
       navigate("/signin");
     } catch (error) {

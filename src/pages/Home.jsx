@@ -6,11 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "../components/sidebar/Sidebar";
 import SearchProducts from "../components/search/SearchProducts";
 import Card from "../components/card/Card";
-import { ProductContext } from "../context";
 import {
-  setSearchProduct,
-  setProductByPrice,
-  setProductByCategory,
   getProducts,
 } from "../store/reducers/home.reducer";
 
@@ -57,18 +53,8 @@ const Home = () => {
     dispatch(getProducts());
   }, []);
 
-  // Shared context data to be passed down to child components
-  const sharedData = {
-    products,
-    setSearchProduct,
-    setProductByPrice,
-    setProductByCategory,
-  };
-
   return (
     <>
-      {/* Providing product data through context */}
-      <ProductContext.Provider value={sharedData}>
         <div className="home-container">
           {/* Sidebar component with filtering options */}
           <Sidebar />
@@ -99,7 +85,6 @@ const Home = () => {
             )}
           </div>
         </div>
-      </ProductContext.Provider>
     </>
   );
 };
