@@ -28,11 +28,13 @@ const Cart = () => {
 
   // Extracting userId from UserContext
   const { userId } = useContext(UserContext);
-  
+
   const navigate = useNavigate();
 
-  const { cartItems, totalPrice, loader } = useSelector((store) => store.cart);
-  const dispatch = useDispatch()
+  const { cartItems, totalPrice, loader } = useSelector(
+    (store) => store.cart
+  );
+  const dispatch = useDispatch();
 
   // Function to calculate the total price of the cart items
   const userCartTotalPrice = () => {
@@ -101,6 +103,8 @@ const Cart = () => {
     // Cleanup the listener when component unmounts or userId changes
     return () => unsubscribe();
   };
+
+
   useEffect(() => {
     fetchCartItem();
   }, [userId]);

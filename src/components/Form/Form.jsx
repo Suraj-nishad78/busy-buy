@@ -1,15 +1,12 @@
 import { useSelector } from "react-redux";
 import "./Form.css";
-import { useEffect } from "react";
 const Form = ({
   // 🟢 Signin Props
-  signText, // Holds signin email & password values
   handleSignEmail, // Handles change in signin email
   handleSignPassword, // Handles change in signin password
   handleSignin, // Handles signin form submission
 
   // 🔵 Signup Props
-  signupText, // Holds signup name, email & password values
   handleSignupName, // Handles change in signup name
   handleSignupEmail, // Handles change in signup email
   handleSignupPassword, // Handles change in signup password

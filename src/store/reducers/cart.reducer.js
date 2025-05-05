@@ -1,9 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  addDoc,
-  deleteDoc,
-  doc
-} from "firebase/firestore";
+import { addDoc, deleteDoc, doc } from "firebase/firestore";
 import { cartRef, db } from "../../../config/firebaseinit";
 import { toast } from "react-toastify";
 
@@ -17,7 +13,7 @@ export const removeItemThunk = createAsyncThunk(
   }
 );
 
-  // Function to handle adding product to the cart
+// Function to handle adding product to the cart
 export const addToCartThunk = createAsyncThunk(
   "cart/addToCartThunk",
   async ({ products, userId }, thunkAPI) => {
@@ -40,6 +36,7 @@ const INITIAl_STATE = {
   totalPrice: 0,
   loader: false,
   error: "",
+  success: "",
   showAdding: false,
 };
 
@@ -61,16 +58,13 @@ const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(removeItemThunk.fulfilled, (state, action) => {
-        state.error = "Item Removed Successfully!";
+        state.success = "Item Removed Successfully!";
       })
       .addCase(removeItemThunk.rejected, (state) => {
         state.error = "Removing item failed!";
       })
-      .addCase(addToCartThunk.pending, (state) => {
-        state.error = "Product adding in progress...";
-      })
       .addCase(addToCartThunk.fulfilled, (state, action) => {
-        state.error = "Product added successfully.";
+        state.success = "Product added successfully.";
       })
       .addCase(addToCartThunk.rejected, (state) => {
         state.error = "Product added to cart failed";

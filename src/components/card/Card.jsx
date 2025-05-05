@@ -61,7 +61,7 @@ const Card = ({ products, removeBtn, addCartBtn }) => {
         return;
       }
       setShowAdding(true);
-      dispatch(addToCartThunk({ products, userId }));
+      await dispatch(addToCartThunk({ products, userId }));
       setShowAdding(false);
     } catch (error) {
       console.log("Error while add to cart product: ", error);

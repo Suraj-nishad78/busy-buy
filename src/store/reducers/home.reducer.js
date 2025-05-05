@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { productRef } from "../../../config/firebaseinit";
 import { getDocs } from "firebase/firestore";
+import { dataProducts } from "../../data";
 
 const INITIAL_STATE = {
   loader: false,
@@ -11,16 +12,21 @@ const INITIAL_STATE = {
   productByCategory: [],
 };
 
-  // Function to fetch products from Firestore
+// Function to fetch products from Firestore
 export const getProducts = createAsyncThunk(
   "home/getProducts",
   async (_, thunkAPI) => {
-    const fetchProduct = await getDocs(productRef);
-    const product = fetchProduct.docs.map((product) => ({
-      id: product.id,
-      ...product.data(),
-    }));
-    return product;
+    try{
+
+      const fetchProduct = await getDocs(productRef);
+      const product = fetchProduct.docs.map((product) => ({
+        id: product.id,
+        ...product.data(),
+      }));
+      return product;
+    } catch(error){
+      return thunkAPI.fulfillWithValue(dataProducts)
+    }
   }
 );
 
@@ -44,6 +50,9 @@ const homeSlice = createSlice({
     setProductByCategory: (state, action) => {
       state.productByCategory = action.payload;
     },
+    clearError:(state)=>{
+      state.error = "";
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -67,5 +76,6 @@ export const {
   setSearchProduct,
   setProductByPrice,
   setProductByCategory,
+  clearError
 } = homeSlice.actions;
 export default homeSlice.reducer;

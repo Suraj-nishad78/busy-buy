@@ -9,31 +9,17 @@ import { UserContext } from "../context";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  setLoader,
-  setOrders,
+  fetchOrderThunk,
   setUserOrders,
+  clearError
 } from "../store/reducers/order.reducer";
+import { toast } from "react-toastify";
 
 const MyOrders = () => {
   // Access the userId from the context (global state)
   const { userId } = useContext(UserContext);
-  const { orders, userOrders, loader } = useSelector((store) => store.order);
+  const { orders, userOrders, loader, error } = useSelector((store) => store.order);
   const dispatch = useDispatch();
-
-  // Fetch orders from Firestore and store them in the 'orders' state
-  const fetchOrdersFromFireStore = async () => {
-    try {
-      dispatch(setLoader()); // Set loader to true when starting the fetch process
-      const getOrders = await getDocs(orderRef); // Get all orders from Firestore
-      const allOrders = getOrders.docs.map((order) => ({
-        id: order.id,
-        ...order.data(), // Map each order document to an object with the document data
-      }));
-      dispatch(setOrders(allOrders)); // Update the 'orders' state with the fetched data
-    } catch (err) {
-      console.log("Error while fetching orders: ", err); // Log any errors
-    }
-  };
 
   // Filter orders to get only the ones belonging to the current user
   const getUserOrders = () => {
@@ -43,13 +29,17 @@ const MyOrders = () => {
 
   // Use effect to fetch orders when the component mounts
   useEffect(() => {
-    fetchOrdersFromFireStore();
+    dispatch(fetchOrderThunk());
   }, []);
 
   // Use effect to update userOrders whenever 'orders' state changes
   useEffect(() => {
+    if(error){
+      toast.error(error)
+      dispatch(clearError())
+    }
     getUserOrders();
-  }, [orders]);
+  }, [orders, error]);
 
   return (
     <>
