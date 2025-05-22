@@ -1,8 +1,8 @@
 /* Card box styles */
 .card-box{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    min-width: 20em;
-    max-width: 20em;
+    min-width: 18em;
+    max-width: 18em;
     border-radius: 10px;
     /* padding: 1px 0px; */
   }

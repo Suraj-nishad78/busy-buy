@@ -1,10 +1,12 @@
 /* Sidebar container styles */
 .sidebar-container {
     min-width: 16vw;
+    max-width: 18vw;
     background-color: rgba(128, 128, 128, 0.3);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 5px;
-    height: 45vh;
+    min-height: 49vh;
+    max-height: 45vh;
     /* text-align: center; */
     margin-top: 7em;
     position: sticky;
