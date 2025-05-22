@@ -1,4 +1,4 @@
-import "./OrderTable.css";
+import "./orderTable.css";
 
 const OrderTable = ({ order }) => {
 
