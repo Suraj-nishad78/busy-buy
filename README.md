@@ -27,13 +27,13 @@ State Management: React Context API
 
 buy-busy/
 ├── config/
-│   └── firebaseinit.js        # Firebase configuration
+│   └── firebaseinit.js 
 ├── src/
-│   ├── components/            # UI components (Card, Form, Navbar, OrderTable)
-│   ├── App.jsx                # Main application logic
-│   ├── context.js             # Global state using Context API
-│   ├── main.jsx               # Entry point
-│   └── index.css              # Global styles
+│   ├── components/ 
+│   ├── App.jsx 
+│   ├── context.js
+│   ├── main.jsx
+│   └── index.css
 ├── index.html
 ├── package.json
 ├── vite.config.js
