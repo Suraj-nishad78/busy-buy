@@ -79,7 +79,9 @@ Admin dashboard for order analytics
 
 Firebase Firestore integration for real-time order storage
 
-🧑‍💻 Author
+The project is live!  
+👉 **[View Live Demo](https://buy-busy-every.netlify.app/)**
 
+🧑‍💻 Author
 Developed by: [Suraj Nishad ]
 
