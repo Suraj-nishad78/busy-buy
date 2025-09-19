@@ -54,7 +54,10 @@ The project is live!
 ---
 
 ## 📸 Screenshots
-
+![alt text](./web-image/image1.png)
+![alt text](./web-image/image2.png)
+![alt text](./web-image/image3.png)
+![alt text](./web-image/image4.png)
 
 ---
 
