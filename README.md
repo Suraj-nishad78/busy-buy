@@ -51,7 +51,6 @@ The project is live!
 👉 **[View Live Demo](https://buy-busy-every.netlify.app/)**
 
 ---
----
 
 ## 📸 Screenshots
 ![alt text](./web-image/image1.png)
@@ -60,7 +59,6 @@ The project is live!
 ![alt text](./web-image/image4.png)
 
 ---
+🧑‍💻 Author
+Developed by: [Suraj Nishad ]
 
-## 📞 Contact
-- **Author:** Suraj Nishad
-- **Email:** iamsuraj0737@gmail.com
